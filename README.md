@@ -2,6 +2,8 @@
 
 Proiect Next.js cu animații și interactivitate, optimizat pentru GitHub Pages.
 
+🌐 **Live:** https://davideboss2003.github.io/date-invite/
+
 ## 🚀 Deploy pe GitHub Pages
 
 ### Opțiunea 1: Deploy Automat (Recomandat)
