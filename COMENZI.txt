@@ -1,0 +1,58 @@
+=== COMENZI RAPIDE PENTRU DEPLOY ===
+
+📝 ÎNAINTE DE ORICE:
+Deschide next.config.mjs și schimbă:
+const repo = "date-invite";  ← pune numele tău de repo
+
+=== DEPLOY PE GITHUB PAGES ===
+
+1) Creează repo pe GitHub (Public, nume: date-invite)
+
+2) În terminal, în folderul proiectului:
+
+git init
+git add .
+git commit -m "Invitație gata"
+git branch -M main
+git remote add origin https://github.com/USERNAME/date-invite.git
+git push -u origin main
+
+(Înlocuiește USERNAME cu username-ul tău!)
+
+3) Pe GitHub:
+Settings → Pages → Source: GitHub Actions → Save
+
+4) Așteaptă 3 minute → Gata!
+Link: https://USERNAME.github.io/date-invite/
+
+=== TEST LOCAL (înainte să urci) ===
+
+npm install
+npm run build
+npx serve out
+
+Deschide linkul → dacă merge, merge și pe Pages!
+
+=== ACTUALIZARE SITE (după ce e live) ===
+
+git add .
+git commit -m "Update"
+git push
+
+Așteaptă 2 minute → site actualizat automat!
+
+=== PROBLEME? ===
+
+- Verifică Actions tab pe GitHub
+- Verifică că numele repo din next.config.mjs e corect
+- Verifică că Source e "GitHub Actions" (nu branch)
+- Așteaptă 5 minute (prima dată durează mai mult)
+
+=== ALTERNATIVĂ SIMPLĂ: VERCEL ===
+
+1) vercel.com
+2) Import Git Repository
+3) Deploy
+4) Gata!
+
+Mai simplu, dar GitHub Pages e gratis forever!
