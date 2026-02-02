@@ -1,4 +1,4 @@
-# Date Invite - Invitație Interactivă
+# Date Invite - Invitație Interactivă 💝
 
 Proiect Next.js cu animații și interactivitate, optimizat pentru GitHub Pages.
 
