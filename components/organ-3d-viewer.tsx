@@ -193,7 +193,7 @@ export function Organ3DViewer({ organId, bodyPart, onClose }: Organ3DViewerProps
         {/* 3D Viewer */}
         <div
           ref={containerRef}
-          className="relative flex-1 min-h-[350px] lg:min-h-[500px] rounded-2xl overflow-hidden bg-foreground/10 backdrop-blur-lg border border-primary/20"
+          className="relative flex-1 min-h-[420px] lg:min-h-[500px] rounded-2xl overflow-hidden bg-foreground/10 backdrop-blur-lg border border-primary/20"
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
@@ -207,7 +207,7 @@ export function Organ3DViewer({ organId, bodyPart, onClose }: Organ3DViewerProps
             </div>
           }>
             <Canvas
-              camera={{ position: [0, 0, 3.5], fov: 50 }}
+              camera={{ position: [0, 0, 4.5], fov: 45 }}
               style={{ background: "transparent" }}
               gl={{ alpha: true, antialias: true }}
             >
@@ -356,7 +356,7 @@ export function Organ3DViewer({ organId, bodyPart, onClose }: Organ3DViewerProps
 // Camera zoom component
 function CameraZoom({ zoom }: { zoom: number }) {
   useFrame((state) => {
-    const targetZ = 3.5 / zoom
+    const targetZ = 4.5 / zoom
     state.camera.position.z += (targetZ - state.camera.position.z) * 0.1
     state.camera.updateProjectionMatrix()
   })

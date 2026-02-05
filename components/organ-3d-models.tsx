@@ -38,9 +38,9 @@ function GlbOrganModel({ glbPath, color, emissiveColor, emissiveIntensity, pulse
     box.getSize(size)
     box.getCenter(center)
 
-    // Normalize to fit within ~1.5 units
+    // Normalize to fit within ~3.5 units so models look big, especially on mobile
     const maxDim = Math.max(size.x, size.y, size.z)
-    const targetSize = 1.5
+    const targetSize = 3.5
     const scaleFactor = maxDim > 0 ? targetSize / maxDim : 1
     clone.scale.multiplyScalar(scaleFactor)
 
