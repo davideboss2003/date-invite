@@ -1,9 +1,16 @@
 "use client"
 
 import { useState } from "react"
+import dynamic from "next/dynamic"
 import { HumanBodyDiagram } from "./human-body-diagram"
 import { OrganInfoPanel } from "./organ-info-panel"
 import { BowknotDecoration } from "./bowknot-decoration"
+
+// Lazy load the 3D viewer for performance
+const Organ3DViewer = dynamic(
+  () => import("./organ-3d-viewer").then((mod) => ({ default: mod.Organ3DViewer })),
+  { ssr: false }
+)
 
 export type BodyPart = {
   id: string
@@ -74,6 +81,20 @@ const bodyPartsData: Record<string, BodyPart> = {
 
 export function AnatomyExplorer() {
   const [selectedPart, setSelectedPart] = useState<BodyPart | null>(null)
+  const [viewing3D, setViewing3D] = useState<BodyPart | null>(null)
+
+  const handleSelectPart = (partId: string) => {
+    const part = bodyPartsData[partId] || null
+    setSelectedPart(part)
+    // Open 3D viewer when an organ is clicked
+    if (part) {
+      setViewing3D(part)
+    }
+  }
+
+  const handleClose3D = () => {
+    setViewing3D(null)
+  }
 
   return (
     <section className="py-12 md:py-20 relative">
@@ -91,7 +112,7 @@ export function AnatomyExplorer() {
             Poti explora
           </h2>
           <p className="font-sans text-muted-foreground max-w-lg mx-auto">
-            Apasa pe diferite parti ale corpului pentru a descoperi lucruri fascinante
+            Apasa pe diferite parti ale corpului pentru a descoperi lucruri fascinante in 3D
           </p>
         </div>
 
@@ -100,7 +121,7 @@ export function AnatomyExplorer() {
           <div className="flex justify-center">
             <HumanBodyDiagram
               selectedPart={selectedPart?.id || null}
-              onSelectPart={(partId) => setSelectedPart(bodyPartsData[partId] || null)}
+              onSelectPart={handleSelectPart}
             />
           </div>
 
@@ -113,6 +134,15 @@ export function AnatomyExplorer() {
           </div>
         </div>
       </div>
+
+      {/* 3D Organ Viewer Modal */}
+      {viewing3D && (
+        <Organ3DViewer
+          organId={viewing3D.id}
+          bodyPart={viewing3D}
+          onClose={handleClose3D}
+        />
+      )}
     </section>
   )
 }
