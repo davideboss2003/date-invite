@@ -131,39 +131,18 @@ export function BrainModel() {
   )
 }
 
-// Lungs - two organic shapes with bronchi
+// Lungs - loads real .glb model
 export function LungsModel() {
-  const groupRef = useRef<THREE.Group>(null)
-  usePulse(groupRef, 0.6)
-
+  const data = organModels.lungs
+  if (!data.glbPath) return null
   return (
-    <group ref={groupRef}>
-      {/* Left lung */}
-      <mesh position={[-0.55, 0, 0]} scale={[0.8, 1, 0.6]}>
-        <sphereGeometry args={[0.55, 32, 32]} />
-        <meshStandardMaterial color="#ffb6c8" emissive="#ff9ab0" emissiveIntensity={0.12} roughness={0.4} metalness={0.05} />
-      </mesh>
-      {/* Right lung (slightly bigger) */}
-      <mesh position={[0.55, 0, 0]} scale={[0.85, 1, 0.65]}>
-        <sphereGeometry args={[0.55, 32, 32]} />
-        <meshStandardMaterial color="#ffb6c8" emissive="#ff9ab0" emissiveIntensity={0.12} roughness={0.4} metalness={0.05} />
-      </mesh>
-      {/* Trachea */}
-      <mesh position={[0, 0.7, 0]}>
-        <cylinderGeometry args={[0.08, 0.1, 0.6, 12]} />
-        <meshStandardMaterial color="#e8909e" emissive="#d0808e" emissiveIntensity={0.1} roughness={0.5} />
-      </mesh>
-      {/* Left bronchus */}
-      <mesh position={[-0.25, 0.35, 0]} rotation={[0, 0, 0.6]}>
-        <cylinderGeometry args={[0.05, 0.07, 0.5, 10]} />
-        <meshStandardMaterial color="#e8909e" emissive="#d0808e" emissiveIntensity={0.1} roughness={0.5} />
-      </mesh>
-      {/* Right bronchus */}
-      <mesh position={[0.25, 0.35, 0]} rotation={[0, 0, -0.6]}>
-        <cylinderGeometry args={[0.05, 0.07, 0.5, 10]} />
-        <meshStandardMaterial color="#e8909e" emissive="#d0808e" emissiveIntensity={0.1} roughness={0.5} />
-      </mesh>
-    </group>
+    <GlbOrganModel
+      glbPath={data.glbPath}
+      color={data.color}
+      emissiveColor={data.emissiveColor}
+      emissiveIntensity={data.emissiveIntensity}
+      pulseSpeed={0.6}
+    />
   )
 }
 

@@ -44,6 +44,7 @@ export const organModels: Record<string, OrganModelData> = {
     color: ORGAN_COLORS.secondary,
     emissiveColor: ORGAN_COLORS.secondary,
     emissiveIntensity: 0.1,
+    glbPath: "/models/lungs.glb",
   },
   stomach: {
     id: "stomach",
