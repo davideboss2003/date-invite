@@ -16,6 +16,7 @@ export type OrganModelData = {
   color: string
   emissiveColor: string
   emissiveIntensity: number
+  glbPath?: string // optional path to a .glb model in /public/models/
 }
 
 export const organModels: Record<string, OrganModelData> = {
@@ -26,6 +27,7 @@ export const organModels: Record<string, OrganModelData> = {
     color: ORGAN_COLORS.lavender,
     emissiveColor: ORGAN_COLORS.lavender,
     emissiveIntensity: 0.15,
+    glbPath: "/models/brain.glb",
   },
   heart: {
     id: "heart",

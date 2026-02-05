@@ -1,8 +1,10 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useMemo } from "react"
 import { useFrame } from "@react-three/fiber"
-import type * as THREE from "three"
+import { useGLTF } from "@react-three/drei"
+import * as THREE from "three"
+import { organModels } from "@/lib/organ-geometries"
 
 // Shared pulsing animation hook
 function usePulse(ref: React.RefObject<THREE.Group | null>, speed = 1.2) {
@@ -11,6 +13,66 @@ function usePulse(ref: React.RefObject<THREE.Group | null>, speed = 1.2) {
     const scale = 1 + Math.sin(state.clock.elapsedTime * speed) * 0.03
     ref.current.scale.setScalar(scale)
   })
+}
+
+// Generic GLB model loader - used for any organ that has a .glb file
+function GlbOrganModel({ glbPath, color, emissiveColor, emissiveIntensity, pulseSpeed = 0.8 }: {
+  glbPath: string
+  color: string
+  emissiveColor: string
+  emissiveIntensity: number
+  pulseSpeed?: number
+}) {
+  const groupRef = useRef<THREE.Group>(null)
+  const { scene } = useGLTF(glbPath)
+  usePulse(groupRef, pulseSpeed)
+
+  // Clone and apply custom materials
+  const clonedScene = useMemo(() => {
+    const clone = scene.clone(true)
+
+    // Compute a bounding box to auto-center and auto-scale the model
+    const box = new THREE.Box3().setFromObject(clone)
+    const size = new THREE.Vector3()
+    const center = new THREE.Vector3()
+    box.getSize(size)
+    box.getCenter(center)
+
+    // Normalize to fit within ~1.5 units
+    const maxDim = Math.max(size.x, size.y, size.z)
+    const targetSize = 1.5
+    const scaleFactor = maxDim > 0 ? targetSize / maxDim : 1
+    clone.scale.multiplyScalar(scaleFactor)
+
+    // Center the model
+    clone.position.set(
+      -center.x * scaleFactor,
+      -center.y * scaleFactor,
+      -center.z * scaleFactor
+    )
+
+    // Apply themed materials to all meshes
+    clone.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        const mat = new THREE.MeshStandardMaterial({
+          color: new THREE.Color(color),
+          emissive: new THREE.Color(emissiveColor),
+          emissiveIntensity,
+          roughness: 0.45,
+          metalness: 0.08,
+        })
+        child.material = mat
+      }
+    })
+
+    return clone
+  }, [scene, color, emissiveColor, emissiveIntensity])
+
+  return (
+    <group ref={groupRef}>
+      <primitive object={clonedScene} />
+    </group>
+  )
 }
 
 // Heart - stylized shape using spheres and cone
@@ -54,41 +116,18 @@ export function HeartModel() {
   )
 }
 
-// Brain - wrinkled sphere with folds
+// Brain - loads real .glb model
 export function BrainModel() {
-  const groupRef = useRef<THREE.Group>(null)
-  usePulse(groupRef, 0.8)
-
+  const data = organModels.brain
+  if (!data.glbPath) return null
   return (
-    <group ref={groupRef}>
-      {/* Left hemisphere */}
-      <mesh position={[-0.35, 0, 0]}>
-        <sphereGeometry args={[0.6, 32, 32]} />
-        <meshStandardMaterial color="#e8b4f8" emissive="#d4a0e8" emissiveIntensity={0.15} roughness={0.6} metalness={0.05} />
-      </mesh>
-      {/* Right hemisphere */}
-      <mesh position={[0.35, 0, 0]}>
-        <sphereGeometry args={[0.6, 32, 32]} />
-        <meshStandardMaterial color="#e8b4f8" emissive="#d4a0e8" emissiveIntensity={0.15} roughness={0.6} metalness={0.05} />
-      </mesh>
-      {/* Cerebellum */}
-      <mesh position={[0, -0.35, -0.2]}>
-        <sphereGeometry args={[0.35, 24, 24]} />
-        <meshStandardMaterial color="#d4a0e8" emissive="#c890d8" emissiveIntensity={0.12} roughness={0.5} />
-      </mesh>
-      {/* Brain stem */}
-      <mesh position={[0, -0.65, -0.1]} rotation={[0.2, 0, 0]}>
-        <cylinderGeometry args={[0.1, 0.12, 0.4, 12]} />
-        <meshStandardMaterial color="#c890d8" emissive="#b880c8" emissiveIntensity={0.1} roughness={0.5} />
-      </mesh>
-      {/* Decorative folds (ridge lines) */}
-      {[...Array(5)].map((_, i) => (
-        <mesh key={i} position={[-0.35 + i * 0.18, 0.15 + Math.sin(i) * 0.1, 0.45]} rotation={[0, 0, 0.3 * Math.sin(i)]}>
-          <capsuleGeometry args={[0.03, 0.25, 6, 12]} />
-          <meshStandardMaterial color="#d4a0e8" emissive="#c890d8" emissiveIntensity={0.1} roughness={0.7} />
-        </mesh>
-      ))}
-    </group>
+    <GlbOrganModel
+      glbPath={data.glbPath}
+      color={data.color}
+      emissiveColor={data.emissiveColor}
+      emissiveIntensity={data.emissiveIntensity}
+      pulseSpeed={0.8}
+    />
   )
 }
 
@@ -342,3 +381,10 @@ export const organComponents: Record<string, React.ComponentType> = {
   skeleton: SkeletonModel,
   muscles: MusclesModel,
 }
+
+// Preload all .glb models for instant display
+Object.values(organModels).forEach((model) => {
+  if (model.glbPath) {
+    useGLTF.preload(model.glbPath)
+  }
+})
