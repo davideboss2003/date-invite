@@ -52,6 +52,7 @@ export const organModels: Record<string, OrganModelData> = {
     color: ORGAN_COLORS.primary,
     emissiveColor: ORGAN_COLORS.primary,
     emissiveIntensity: 0.12,
+    glbPath: "/models/stomach.glb",
   },
   liver: {
     id: "liver",
@@ -60,6 +61,7 @@ export const organModels: Record<string, OrganModelData> = {
     color: "#d4738c",
     emissiveColor: ORGAN_COLORS.primary,
     emissiveIntensity: 0.1,
+    glbPath: "/models/liver.glb",
   },
   kidneys: {
     id: "kidneys",
@@ -68,6 +70,7 @@ export const organModels: Record<string, OrganModelData> = {
     color: "#e8909e",
     emissiveColor: ORGAN_COLORS.secondary,
     emissiveIntensity: 0.12,
+    glbPath: "/models/kidneys.glb",
   },
   skeleton: {
     id: "skeleton",
@@ -76,6 +79,7 @@ export const organModels: Record<string, OrganModelData> = {
     color: ORGAN_COLORS.white,
     emissiveColor: ORGAN_COLORS.light,
     emissiveIntensity: 0.08,
+    glbPath: "/models/skeleton.glb",
   },
   muscles: {
     id: "muscles",

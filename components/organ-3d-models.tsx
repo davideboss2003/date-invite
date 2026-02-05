@@ -167,157 +167,63 @@ export function LungsModel() {
   )
 }
 
-// Stomach - squashed blob
+// Stomach - loads real .glb model
 export function StomachModel() {
-  const groupRef = useRef<THREE.Group>(null)
-  usePulse(groupRef)
-
+  const data = organModels.stomach
+  if (!data.glbPath) return null
   return (
-    <group ref={groupRef}>
-      {/* Main stomach body */}
-      <mesh scale={[0.8, 1, 0.6]}>
-        <sphereGeometry args={[0.7, 32, 32]} />
-        <meshStandardMaterial color="#ff85a2" emissive="#ff6b8a" emissiveIntensity={0.12} roughness={0.35} metalness={0.05} />
-      </mesh>
-      {/* Upper curve (fundus) */}
-      <mesh position={[-0.3, 0.45, 0]} scale={[0.7, 0.5, 0.5]}>
-        <sphereGeometry args={[0.45, 24, 24]} />
-        <meshStandardMaterial color="#ff9ab0" emissive="#ff85a2" emissiveIntensity={0.1} roughness={0.4} />
-      </mesh>
-      {/* Esophagus connection */}
-      <mesh position={[-0.15, 0.75, 0]} rotation={[0, 0, 0.2]}>
-        <cylinderGeometry args={[0.08, 0.1, 0.4, 12]} />
-        <meshStandardMaterial color="#e07090" emissive="#d06080" emissiveIntensity={0.1} roughness={0.5} />
-      </mesh>
-      {/* Pylorus (exit) */}
-      <mesh position={[0.5, -0.25, 0]} rotation={[0, 0, -0.8]}>
-        <cylinderGeometry args={[0.06, 0.1, 0.35, 12]} />
-        <meshStandardMaterial color="#e07090" emissive="#d06080" emissiveIntensity={0.1} roughness={0.5} />
-      </mesh>
-    </group>
+    <GlbOrganModel
+      glbPath={data.glbPath}
+      color={data.color}
+      emissiveColor={data.emissiveColor}
+      emissiveIntensity={data.emissiveIntensity}
+      pulseSpeed={1.2}
+    />
   )
 }
 
-// Liver - large rounded shape
+// Liver - loads real .glb model
 export function LiverModel() {
-  const groupRef = useRef<THREE.Group>(null)
-  usePulse(groupRef, 0.5)
-
+  const data = organModels.liver
+  if (!data.glbPath) return null
   return (
-    <group ref={groupRef}>
-      {/* Right lobe (larger) */}
-      <mesh position={[0.15, 0, 0]} scale={[1.2, 0.7, 0.6]}>
-        <sphereGeometry args={[0.6, 32, 32]} />
-        <meshStandardMaterial color="#d4738c" emissive="#c06378" emissiveIntensity={0.12} roughness={0.4} metalness={0.08} />
-      </mesh>
-      {/* Left lobe (smaller) */}
-      <mesh position={[-0.55, 0.1, 0]} scale={[0.7, 0.55, 0.5]}>
-        <sphereGeometry args={[0.45, 24, 24]} />
-        <meshStandardMaterial color="#d4738c" emissive="#c06378" emissiveIntensity={0.12} roughness={0.4} metalness={0.08} />
-      </mesh>
-      {/* Gallbladder */}
-      <mesh position={[0.35, -0.35, 0.2]} scale={[0.3, 0.5, 0.3]}>
-        <sphereGeometry args={[0.25, 16, 16]} />
-        <meshStandardMaterial color="#a8d48c" emissive="#90bc74" emissiveIntensity={0.1} roughness={0.4} />
-      </mesh>
-    </group>
+    <GlbOrganModel
+      glbPath={data.glbPath}
+      color={data.color}
+      emissiveColor={data.emissiveColor}
+      emissiveIntensity={data.emissiveIntensity}
+      pulseSpeed={0.5}
+    />
   )
 }
 
-// Kidneys - two bean shapes
+// Kidneys - loads real .glb model
 export function KidneysModel() {
-  const groupRef = useRef<THREE.Group>(null)
-  usePulse(groupRef, 0.7)
-
+  const data = organModels.kidneys
+  if (!data.glbPath) return null
   return (
-    <group ref={groupRef}>
-      {/* Left kidney */}
-      <group position={[-0.6, 0, 0]}>
-        <mesh scale={[0.45, 0.7, 0.35]}>
-          <sphereGeometry args={[0.5, 32, 32]} />
-          <meshStandardMaterial color="#e8909e" emissive="#d0808e" emissiveIntensity={0.12} roughness={0.35} metalness={0.05} />
-        </mesh>
-        {/* Indent */}
-        <mesh position={[0.15, 0, 0.15]} scale={[0.2, 0.4, 0.15]}>
-          <sphereGeometry args={[0.4, 16, 16]} />
-          <meshStandardMaterial color="#d07888" emissive="#c06878" emissiveIntensity={0.1} roughness={0.5} />
-        </mesh>
-      </group>
-      {/* Right kidney */}
-      <group position={[0.6, 0, 0]}>
-        <mesh scale={[0.45, 0.7, 0.35]}>
-          <sphereGeometry args={[0.5, 32, 32]} />
-          <meshStandardMaterial color="#e8909e" emissive="#d0808e" emissiveIntensity={0.12} roughness={0.35} metalness={0.05} />
-        </mesh>
-        {/* Indent */}
-        <mesh position={[-0.15, 0, 0.15]} scale={[0.2, 0.4, 0.15]}>
-          <sphereGeometry args={[0.4, 16, 16]} />
-          <meshStandardMaterial color="#d07888" emissive="#c06878" emissiveIntensity={0.1} roughness={0.5} />
-        </mesh>
-      </group>
-      {/* Connecting ureters */}
-      <mesh position={[-0.3, -0.35, 0]} rotation={[0, 0, 0.3]}>
-        <cylinderGeometry args={[0.03, 0.03, 0.5, 8]} />
-        <meshStandardMaterial color="#d0808e" roughness={0.5} />
-      </mesh>
-      <mesh position={[0.3, -0.35, 0]} rotation={[0, 0, -0.3]}>
-        <cylinderGeometry args={[0.03, 0.03, 0.5, 8]} />
-        <meshStandardMaterial color="#d0808e" roughness={0.5} />
-      </mesh>
-    </group>
+    <GlbOrganModel
+      glbPath={data.glbPath}
+      color={data.color}
+      emissiveColor={data.emissiveColor}
+      emissiveIntensity={data.emissiveIntensity}
+      pulseSpeed={0.7}
+    />
   )
 }
 
-// Skeleton - bones and joints
+// Skeleton - loads real .glb model
 export function SkeletonModel() {
-  const groupRef = useRef<THREE.Group>(null)
-  usePulse(groupRef, 0.4)
-
+  const data = organModels.skeleton
+  if (!data.glbPath) return null
   return (
-    <group ref={groupRef}>
-      {/* Spine */}
-      <mesh position={[0, 0, 0]}>
-        <cylinderGeometry args={[0.06, 0.08, 1.8, 12]} />
-        <meshStandardMaterial color="#fff5f8" emissive="#ffd4e0" emissiveIntensity={0.1} roughness={0.3} metalness={0.15} />
-      </mesh>
-      {/* Skull */}
-      <mesh position={[0, 1.1, 0]}>
-        <sphereGeometry args={[0.3, 24, 24]} />
-        <meshStandardMaterial color="#fff5f8" emissive="#ffd4e0" emissiveIntensity={0.1} roughness={0.3} metalness={0.15} />
-      </mesh>
-      {/* Jaw */}
-      <mesh position={[0, 0.85, 0.1]} scale={[0.8, 0.4, 0.6]}>
-        <sphereGeometry args={[0.2, 16, 16]} />
-        <meshStandardMaterial color="#fff0f3" emissive="#ffd4e0" emissiveIntensity={0.08} roughness={0.3} metalness={0.15} />
-      </mesh>
-      {/* Ribcage - curved bones */}
-      {[...Array(6)].map((_, i) => (
-        <group key={i} position={[0, 0.5 - i * 0.15, 0]}>
-          <mesh position={[-0.25, 0, 0.1]} rotation={[0.3, 0, -0.5]}>
-            <capsuleGeometry args={[0.025, 0.3, 6, 10]} />
-            <meshStandardMaterial color="#fff5f8" emissive="#ffd4e0" emissiveIntensity={0.08} roughness={0.3} metalness={0.15} />
-          </mesh>
-          <mesh position={[0.25, 0, 0.1]} rotation={[0.3, 0, 0.5]}>
-            <capsuleGeometry args={[0.025, 0.3, 6, 10]} />
-            <meshStandardMaterial color="#fff5f8" emissive="#ffd4e0" emissiveIntensity={0.08} roughness={0.3} metalness={0.15} />
-          </mesh>
-        </group>
-      ))}
-      {/* Pelvis */}
-      <mesh position={[0, -0.7, 0]} scale={[1.2, 0.5, 0.6]}>
-        <sphereGeometry args={[0.3, 16, 16]} />
-        <meshStandardMaterial color="#fff0f3" emissive="#ffd4e0" emissiveIntensity={0.08} roughness={0.3} metalness={0.15} />
-      </mesh>
-      {/* Shoulder joints */}
-      <mesh position={[-0.5, 0.55, 0]}>
-        <sphereGeometry args={[0.08, 12, 12]} />
-        <meshStandardMaterial color="#ffd4e0" roughness={0.3} metalness={0.15} />
-      </mesh>
-      <mesh position={[0.5, 0.55, 0]}>
-        <sphereGeometry args={[0.08, 12, 12]} />
-        <meshStandardMaterial color="#ffd4e0" roughness={0.3} metalness={0.15} />
-      </mesh>
-    </group>
+    <GlbOrganModel
+      glbPath={data.glbPath}
+      color={data.color}
+      emissiveColor={data.emissiveColor}
+      emissiveIntensity={data.emissiveIntensity}
+      pulseSpeed={0.4}
+    />
   )
 }
 
