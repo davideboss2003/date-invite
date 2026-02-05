@@ -170,7 +170,7 @@ export function Organ3DViewer({ organId, bodyPart, onClose }: Organ3DViewerProps
   return (
     <div
       className={cn(
-        "fixed inset-0 z-50 flex items-center justify-center transition-all duration-500",
+        "fixed inset-0 z-50 flex items-end lg:items-center justify-center transition-all duration-500",
         isVisible ? "opacity-100" : "opacity-0"
       )}
     >
@@ -183,17 +183,17 @@ export function Organ3DViewer({ organId, bodyPart, onClose }: Organ3DViewerProps
         onClick={onClose}
       />
 
-      {/* Content */}
+      {/* Content - full screen on mobile, side-by-side on desktop */}
       <div
         className={cn(
-          "relative z-10 w-full max-w-5xl mx-4 flex flex-col lg:flex-row gap-6 items-stretch transition-all duration-500",
-          isVisible ? "scale-100 translate-y-0" : "scale-75 translate-y-8"
+          "relative z-10 w-full h-full lg:h-auto max-w-5xl lg:mx-4 flex flex-col lg:flex-row gap-0 lg:gap-6 items-stretch transition-all duration-500 overflow-y-auto",
+          isVisible ? "scale-100 translate-y-0" : "scale-95 translate-y-8"
         )}
       >
         {/* 3D Viewer */}
         <div
           ref={containerRef}
-          className="relative flex-1 min-h-[420px] lg:min-h-[500px] rounded-2xl overflow-hidden bg-foreground/10 backdrop-blur-lg border border-primary/20"
+          className="relative w-full h-[55vh] lg:h-auto lg:flex-1 lg:min-h-[500px] shrink-0 lg:rounded-2xl overflow-hidden bg-foreground/10 backdrop-blur-lg lg:border lg:border-primary/20"
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
@@ -207,22 +207,21 @@ export function Organ3DViewer({ organId, bodyPart, onClose }: Organ3DViewerProps
             </div>
           }>
             <Canvas
-              camera={{ position: [0, 0, 4.5], fov: 45 }}
+              camera={{ position: [0, 0, 3.8], fov: 50 }}
               style={{ background: "transparent" }}
               gl={{ alpha: true, antialias: true }}
             >
               <OrganScene organId={organId} isDragging={isDragging} organRef={organRef} />
-              {/* Apply zoom via camera */}
               <CameraZoom zoom={zoom} />
             </Canvas>
           </Suspense>
 
           {/* Drag hint overlay */}
           <div className={cn(
-            "absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-card/80 backdrop-blur-sm text-foreground text-sm font-sans flex items-center gap-2 transition-opacity duration-300 pointer-events-none",
+            "absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full bg-card/80 backdrop-blur-sm text-foreground text-xs font-sans flex items-center gap-1.5 transition-opacity duration-300 pointer-events-none",
             isDragging ? "opacity-0" : "opacity-70"
           )}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 9l4-4 4 4" /><path d="M15 15l-4 4-4-4" /><path d="M9 5v14" />
               <path d="M19 9l4-4" /><path d="M19 15l4 4" />
             </svg>
@@ -230,31 +229,31 @@ export function Organ3DViewer({ organId, bodyPart, onClose }: Organ3DViewerProps
           </div>
 
           {/* Zoom controls */}
-          <div className="absolute top-4 right-4 flex flex-col gap-2">
+          <div className="absolute top-3 right-3 flex flex-col gap-1.5">
             <button
               onClick={(e) => { e.stopPropagation(); zoomIn() }}
-              className="w-10 h-10 rounded-xl bg-card/80 backdrop-blur-sm text-foreground flex items-center justify-center hover:bg-card transition-colors border border-border/50"
+              className="w-9 h-9 rounded-xl bg-card/80 backdrop-blur-sm text-foreground flex items-center justify-center hover:bg-card transition-colors border border-border/50"
               aria-label="Zoom in"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
               </svg>
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); zoomOut() }}
-              className="w-10 h-10 rounded-xl bg-card/80 backdrop-blur-sm text-foreground flex items-center justify-center hover:bg-card transition-colors border border-border/50"
+              className="w-9 h-9 rounded-xl bg-card/80 backdrop-blur-sm text-foreground flex items-center justify-center hover:bg-card transition-colors border border-border/50"
               aria-label="Zoom out"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); resetView() }}
-              className="w-10 h-10 rounded-xl bg-card/80 backdrop-blur-sm text-foreground flex items-center justify-center hover:bg-card transition-colors border border-border/50"
+              className="w-9 h-9 rounded-xl bg-card/80 backdrop-blur-sm text-foreground flex items-center justify-center hover:bg-card transition-colors border border-border/50"
               aria-label="Reset view"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
               </svg>
             </button>
@@ -263,10 +262,10 @@ export function Organ3DViewer({ organId, bodyPart, onClose }: Organ3DViewerProps
           {/* Close button */}
           <button
             onClick={(e) => { e.stopPropagation(); onClose() }}
-            className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-card/80 backdrop-blur-sm text-foreground flex items-center justify-center hover:bg-card transition-colors border border-border/50"
+            className="absolute top-3 left-3 w-9 h-9 rounded-xl bg-card/80 backdrop-blur-sm text-foreground flex items-center justify-center hover:bg-card transition-colors border border-border/50"
             aria-label="Inchide"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           </button>
@@ -274,7 +273,7 @@ export function Organ3DViewer({ organId, bodyPart, onClose }: Organ3DViewerProps
 
         {/* Info Panel */}
         <div className={cn(
-          "w-full lg:w-80 rounded-2xl bg-card/95 backdrop-blur-lg border border-border p-6 flex flex-col transition-all duration-500 delay-200",
+          "w-full lg:w-80 rounded-t-2xl lg:rounded-2xl bg-card/95 backdrop-blur-lg border border-border p-5 lg:p-6 flex flex-col transition-all duration-500 delay-200 -mt-4 lg:mt-0 relative",
           isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
         )}>
           <div className="flex items-center gap-3 mb-6">
@@ -356,7 +355,7 @@ export function Organ3DViewer({ organId, bodyPart, onClose }: Organ3DViewerProps
 // Camera zoom component
 function CameraZoom({ zoom }: { zoom: number }) {
   useFrame((state) => {
-    const targetZ = 4.5 / zoom
+    const targetZ = 3.8 / zoom
     state.camera.position.z += (targetZ - state.camera.position.z) * 0.1
     state.camera.updateProjectionMatrix()
   })
