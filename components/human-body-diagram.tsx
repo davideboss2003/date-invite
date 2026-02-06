@@ -225,7 +225,7 @@ export function HumanBodyDiagram({ selectedPart, onSelectPart }: HumanBodyDiagra
           className={cn(
             "absolute transform -translate-x-1/2 -translate-y-1/2",
             "rounded-full transition-all duration-300 cursor-pointer",
-            "hover:bg-primary/30 hover:scale-110",
+            "hover:bg-primary/30 hover:scale-110 hover:animate-organ-glow",
             "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
             "flex items-center justify-center",
             selectedPart === part.id 
@@ -247,7 +247,7 @@ export function HumanBodyDiagram({ selectedPart, onSelectPart }: HumanBodyDiagra
               ? "bg-primary text-primary-foreground" 
               : "bg-card/80 text-foreground opacity-0 group-hover:opacity-100 hover:opacity-100"
           )}>
-            {part.label}
+            {part.label} - 3D
           </span>
         </button>
       ))}

@@ -151,7 +151,7 @@ export function PrescriptionCard() {
             Daca as avea onoarea si privilegiul sa te scot in oras, mi-ar face mare placere!
           </p>
           <p className="font-serif text-2xl md:text-3xl text-primary font-semibold mb-8 text-balance">
-            Ce zici, vrei sa iesim?
+            Ce zici, ai dori sa iesim?
           </p>
 
           {/* Accept Button */}
