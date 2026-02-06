@@ -19,6 +19,11 @@ export type OrganModelData = {
   glbPath?: string // optional path to a .glb model in /public/models/
 }
 
+// Get base path for production (GitHub Pages)
+const basePath = typeof window !== 'undefined' && window.location.hostname.includes('github.io') 
+  ? '/date-invite' 
+  : ''
+
 export const organModels: Record<string, OrganModelData> = {
   brain: {
     id: "brain",
@@ -27,7 +32,7 @@ export const organModels: Record<string, OrganModelData> = {
     color: ORGAN_COLORS.lavender,
     emissiveColor: ORGAN_COLORS.lavender,
     emissiveIntensity: 0.15,
-    glbPath: "/models/brain.glb",
+    glbPath: `${basePath}/models/brain.glb`,
   },
   heart: {
     id: "heart",
@@ -36,7 +41,7 @@ export const organModels: Record<string, OrganModelData> = {
     color: ORGAN_COLORS.primary,
     emissiveColor: ORGAN_COLORS.glow,
     emissiveIntensity: 0.2,
-    glbPath: "/models/heart.glb",
+    glbPath: `${basePath}/models/heart.glb`,
   },
   lungs: {
     id: "lungs",
@@ -45,7 +50,7 @@ export const organModels: Record<string, OrganModelData> = {
     color: ORGAN_COLORS.secondary,
     emissiveColor: ORGAN_COLORS.secondary,
     emissiveIntensity: 0.1,
-    glbPath: "/models/lungs.glb",
+    glbPath: `${basePath}/models/lungs.glb`,
   },
   stomach: {
     id: "stomach",
@@ -54,7 +59,7 @@ export const organModels: Record<string, OrganModelData> = {
     color: ORGAN_COLORS.primary,
     emissiveColor: ORGAN_COLORS.primary,
     emissiveIntensity: 0.12,
-    glbPath: "/models/stomach.glb",
+    glbPath: `${basePath}/models/stomach.glb`,
   },
   liver: {
     id: "liver",
@@ -63,7 +68,7 @@ export const organModels: Record<string, OrganModelData> = {
     color: "#d4738c",
     emissiveColor: ORGAN_COLORS.primary,
     emissiveIntensity: 0.1,
-    glbPath: "/models/liver_3.glb",
+    glbPath: `${basePath}/models/liver_3.glb`,
   },
   kidneys: {
     id: "kidneys",
@@ -72,7 +77,7 @@ export const organModels: Record<string, OrganModelData> = {
     color: "#e8909e",
     emissiveColor: ORGAN_COLORS.secondary,
     emissiveIntensity: 0.12,
-    glbPath: "/models/human_kidney_lowpoly_example_9k.glb",
+    glbPath: `${basePath}/models/human_kidney_lowpoly_example_9k.glb`,
   },
   skeleton: {
     id: "skeleton",
@@ -81,7 +86,7 @@ export const organModels: Record<string, OrganModelData> = {
     color: ORGAN_COLORS.white,
     emissiveColor: ORGAN_COLORS.light,
     emissiveIntensity: 0.08,
-    glbPath: "/models/humerushumero.glb",
+    glbPath: `${basePath}/models/humerushumero.glb`,
   },
   muscles: {
     id: "muscles",
@@ -90,6 +95,6 @@ export const organModels: Record<string, OrganModelData> = {
     color: "#e06080",
     emissiveColor: ORGAN_COLORS.glow,
     emissiveIntensity: 0.15,
-    glbPath: "/models/otot_lurik.glb",
+    glbPath: `${basePath}/models/otot_lurik.glb`,
   },
 }
